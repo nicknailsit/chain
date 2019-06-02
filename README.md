@@ -34,7 +34,7 @@ own blockchain, security algorithm, consensus and coinbase.
 ## UTILITY BASED DEVELOPMENT
 
 I decided to build this project with a specific use-case in mind. However I decided along the way to make it adaptable to more
-decentralized and privacy-centric use-cases.
+decentralized and privacy-centric ones as well.
 
 The first one is of course The Swaggit Network which is currently under development. The chain will enable fast content verification
 and rewards as well as insure privacy and anonimity for the users. The wallet will not only be used to carry the Swagg but also to
