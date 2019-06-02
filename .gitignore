@@ -8,3 +8,5 @@ wallets/*
 .package-lock.json
 build
 build/*
+.idea
+.idea/*
