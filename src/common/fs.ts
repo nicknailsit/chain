@@ -69,7 +69,7 @@ export function unlockFile(filename, secret) {
     try{
         let f = new FileEncrypt(filename);
         f.openSourceFile();
-        f.decrypt(secret);
+        return f.decrypt(secret);
 
     } catch(err) {
         throw err;

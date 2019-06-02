@@ -98,7 +98,7 @@ class Currency implements Coin {
 
     private forgeNewCoin = () => {
 
-        const coin = {
+       return {
             serialNumber: this.createSerialNumber(),
             signature: this.signature,
             currencyName: this.currencyName,
@@ -114,7 +114,7 @@ class Currency implements Coin {
         };
 
 
-        return coin;
+
 
     };
 

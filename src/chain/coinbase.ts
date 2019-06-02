@@ -19,6 +19,12 @@
 'use strict';
 import Transaction from "./transactions";
 import Coin from "./coin";
+import {v4 as uuid} from 'uuid';
+import crypto from 'crypto';
+import {machineId, machineIdSync} from 'node-machine-id';
+import Hashing from '../common/hashing';
+import {lockFile, unlockFile} from '../common/fs';
+import fs from 'fs';
 
 interface coinbase {
 
@@ -51,6 +57,7 @@ class Coinbase implements coinbase {
     chainID:string;
     address:string;
     licenseID:string; //acts like a bank license for the chain
+    signature: string;
     coins:Array<Coin>;
     completed_transactions:Array<Transaction>;
     pending_transactions:Array<Transaction>;
@@ -68,10 +75,72 @@ class Coinbase implements coinbase {
     last_elected_comitee:Array<string>;
     readonly keys:object;
     coin_merkle:any;
+    protected keyPair;
 
-    constructor(chainID) {
+    constructor(chainID, passPhrase) {
+
+        this.keyPair = crypto.generateKeyPairSync('rsa', {
+            modulusLength: 4096,
+            publicKeyEncoding: {
+                type: 'spki',
+                format: 'pem'
+            },
+            privateKeyEncoding: {
+                type: 'pkcs8',
+                format: 'pem'
+            }
+        });
+
+        fs.writeFileSync('./.keychain/coinbase.key', this.keyPair["privateKey"]);
+        fs.writeFileSync('./.keychain/coinbase.pem', this.keyPair["publicKey"]);
+        fs.writeFileSync('./.keychain/coinbase.signature', this.signature);
+
+        lockFile('./.keychain/coinbase.key', passPhrase);
+        lockFile('./.keychain/coinbase.pem', passPhrase);
+
 
     }
+
+    createLicenseID = () => {
+
+        const created_on = Buffer.from(Date.now().toString(16));
+        const uniqueID = Buffer.from(uuid());
+        const originMachineID = Buffer.from(machineIdSync());
+
+        const buf = Buffer.alloc(created_on.length+uniqueID.length+originMachineID.length);
+
+        created_on.copy(buf, 0, 0);
+        uniqueID.copy(buf, created_on.length, 0);
+        originMachineID.copy(buf, created_on.length+uniqueID.length, 0);
+
+
+
+        const license = new Hashing('sha3-256', buf.toString('hex'), true);
+        this.signature = this.signCoinbase(license);
+
+        this.licenseID = license.toString();
+
+
+    };
+
+    static validateLicenseID(passPhrase, licenseID) {
+
+        const signature = fs.readFileSync('./.keychain/coinbase.signature').toString('hex');
+        const pubKey = unlockFile('./.keychain/coinbase.pem', passPhrase).toString();
+        const verify = crypto.createVerify('SHA256');
+        verify.write(licenseID);
+        return verify.verify(pubKey, signature);
+
+    }
+
+    signCoinbase = (data) => {
+
+        const privateKey = this.keyPair["privateKey"];
+        const sign = crypto.createSign('SHA256');
+        sign.write(data);
+        return sign.sign(privateKey, 'hex');
+    }
+
 
 }
 

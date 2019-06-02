@@ -31,7 +31,9 @@
     "immutable": "^4.0.0-rc.12",
     "msgpack": "^1.0.2",
     "node-file-encrypt": "0.0.5",
+    "node-machine-id": "^1.1.12",
     "packet": "0.0.7",
+    "uuid": "^3.3.2",
     "zeromq": "^5.1.0"
   }
 }
