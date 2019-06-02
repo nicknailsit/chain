@@ -12,7 +12,7 @@ with a 1:1 value. The cryptocurrency we will initially pair with is DOGE as its 
 Beign paired does not mean that the swagg will depend on the DOGE blockchain. Swagg is an independent cryptocurrency with its
 own blockchain, security algorithm, consensus and coinbase.
 
-### Coin characteritics
+### Coin characteristics
 
 * Mining
   * POW: SHA3-512
