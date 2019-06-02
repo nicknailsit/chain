@@ -1,0 +1,19 @@
+{
+  "nVersion": 0,
+  "chainID": "041f2764-bb87-49df-8f17-0bf2bdbdc3cf",
+  "height": 0,
+  "index": 0,
+  "nonce": 0,
+  "bits": 0,
+  "time": 0,
+  "signature": "e10dd9bbd1ed26c98af1dc4e3a2d46e5d8e9c0b560d1dd743332c63d8d8980e2cd30e5e52f437613a408e51ffd79dba112a4bb02e67c1a10ce71dad67d71860b",
+  "difficulty":1,
+  "reward":0,
+  "previousHash":"none",
+  "hash":"ab4e0b4b56fe550809ffb855d3214a7e1d274971850de930747fad24dd7172200a7fbdad50f8c2b7e2c19361d5d319818719b88a4312ca5b023e769ad0aea04f",
+  "auxpow":false,
+  "creation_date": 1558989510526,
+  "merkleRoot": null,
+  "transactions": [],
+  "payload": "3f0dd76f214761f352be6b71854114127789bc39332015bd41a8fd733cd1d11e3021ca21b4bc91b1c31b503013496a5303ddb8033db7f1a5aa37f881930a7a36"
+}

@@ -1,0 +1,17 @@
+{
+        "schema": {
+            "description": "swagg it api default route",
+            "tags": ["default", "home"],
+            "summary": "this is the default route (unauthenticated) of the swaggit api, also used to check api status.",
+            "response": {
+                "200": {
+                    "description": "api is online",
+                    "type": "object",
+                    "properties": {
+                        "status": {"type": "string"}
+                    }
+                }
+            }
+        }
+    
+}
