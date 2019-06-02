@@ -48,6 +48,8 @@ The anti-forgery features will also help prevent spam, abuses and fake news with
 
 ## Blockchain specifications
 
+### Technology Stack
+
 ### Blocks
 
 ### Coinbase
