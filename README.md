@@ -28,6 +28,8 @@ own blockchain, security algorithm, consensus and coinbase.
   * Non-usable until mined, validated and transfered to the coinbase
   * Only one owner at a time per spending
   * Encrypted, Versioned, Socially audited
+* Cross-chain transactions (future development)
+* Tokenizable (if the word does not exists I coin it ! ;))
   
 ... more to come
 
