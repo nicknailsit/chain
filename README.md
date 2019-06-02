@@ -39,9 +39,27 @@ I decided to build this project with a specific use-case in mind. However I deci
 decentralized and privacy-centric ones as well.
 
 The first one is of course The Swaggit Network which is currently under development. The chain will enable fast content verification
-and rewards as well as insure privacy and anonimity for the users. The wallet will not only be used to carry the Swagg but also to
+and rewards as well as insure privacy and anonymity for the users. The wallet will not only be used to carry the Swagg but also to
 carry the user encrypted data before it is shared publicly on the network (like facebook, the security settings will be customizable).
 
 The anti-forgery features will also help prevent spam, abuses and fake news without even knowing its content.
 
 ## Robust peer-to-peer communications and data transmission
+
+## Blockchain specifications
+
+### Blocks
+
+### Coinbase
+
+### Wallets
+
+### Transactions
+
+### Algorithms
+
+### Communication Protocol
+
+### Anonymity
+
+### Future developments
