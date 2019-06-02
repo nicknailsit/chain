@@ -95,28 +95,29 @@ class Currency implements Coin {
 
     }
 
+    static verifyExistingCoin(coin: Coin): boolean {
 
-    private forgeNewCoin = () => {
+        return Currency.verifyCoinSignature(coin.serialNumber, coin.signature, coin.coinbase);
 
-       return {
-            serialNumber: this.createSerialNumber(),
-            signature: this.signature,
-            currencyName: this.currencyName,
-            coinbase: this.coinbase.licenseID,
-            mintedOn: "",
-            mintedBy: "",
-            createdOn: Date.now(),
-            value: this.value,
-            status: 1, // 1 = unminted 2 = minted 0 = inactive
-            transferable: false, //non transferable until minted
-            divisible: this.divisible,
-            smallest_unit: (1 / this.divisor)
-        };
+    }
 
-
-
+    static verifyCoinSignature = (serial, signature, coinbase) => {
+        const verify = crypto.createVerify('SHA256');
+        verify.write(serial);
+        return verify.verify(coinbase.keys["public"], signature);
 
     };
+
+    static markAsMinted(coin, address, nonce, hash, coinbase) {
+        coin.mintedOn = Date.now();
+        coin.nonce = nonce;
+        coin.coinHash = hash;
+        coin.mintedBy = address;
+        coin.transferable = true;
+        coinbase.coins.push(coin);
+        coinbase.coins_minted++;
+        coinbase.last_coin_serial = coin.serialNumber;
+    }
 
     protected createSerialNumber = () => {
 
@@ -145,29 +146,25 @@ class Currency implements Coin {
 
     };
 
-    static verifyExistingCoin(coin:Coin):boolean {
+    private forgeNewCoin = () => {
 
-       return Currency.verifyCoinSignature(coin.serialNumber, coin.signature, coin.coinbase);
+        return {
+            serialNumber: this.createSerialNumber(),
+            signature: this.signature,
+            currencyName: this.currencyName,
+            coinbase: this.coinbase.licenseID,
+            mintedOn: "",
+            mintedBy: "",
+            createdOn: Date.now(),
+            value: this.value,
+            status: 1, // 1 = unminted 2 = minted 0 = inactive
+            transferable: false, //non transferable until minted
+            divisible: this.divisible,
+            smallest_unit: (1 / this.divisor)
+        };
 
-    }
-
-    static verifyCoinSignature = (serial, signature, coinbase) => {
-        const verify = crypto.createVerify('SHA256');
-        verify.write(serial);
-        return verify.verify(coinbase.keys["public"], signature);
 
     };
-
-    static markAsMinted(coin, address, nonce, hash, coinbase) {
-        coin.mintedOn = Date.now();
-        coin.nonce = nonce;
-        coin.coinHash = hash;
-        coin.mintedBy = address;
-        coin.transferable = true;
-        coinbase.coins.push(coin);
-        coinbase.coins_minted++;
-        coinbase.last_coin_serial = coin.serialNumber;
-    }
 
 }
 

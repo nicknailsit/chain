@@ -23,24 +23,22 @@ import bs58 from 'bs58';
 
 class Hashing {
 
-    private readonly dataToHash:string|Buffer;
-    private readonly hash:Buffer;
-    private hashString:string;
-    private hashEncoded:string;
+    private readonly dataToHash: string | Buffer;
+    private readonly hash: Buffer;
+    private hashString: string;
+    private hashEncoded: string;
 
-    constructor(hashType:string = "sha3-512", hashData:string|Buffer, toString:boolean = false,bs58encoded:boolean=false, doubleHash:boolean=false) {
+    constructor(hashType: string = "sha3-512", hashData: string | Buffer, toString: boolean = false, bs58encoded: boolean = false, doubleHash: boolean = false) {
 
 
-        if(hashData) {
+        if (hashData) {
 
             this.dataToHash = hashData;
             this.hash = crypto.createHash(hashType).update(this.dataToHash).digest();
 
-            if(toString === true) {
+            if (toString === true) {
                 this._toString();
-            }
-
-            else if(bs58encoded === true) {
+            } else if (bs58encoded === true) {
                 this._toBS58();
             }
 
@@ -72,7 +70,6 @@ class Hashing {
             encoded: this.hashEncoded || null
         };
     }
-
 
 
 }

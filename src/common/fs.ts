@@ -20,11 +20,11 @@
 
 import * as fs from "fs";
 import {mkdirSync} from "fs";
-import {FileEncrypt}from "node-file-encrypt";
+import {FileEncrypt} from "node-file-encrypt";
 
 export function mkdirIfNotExists(dir) {
 
-    if(fs.existsSync(dir) === false) {
+    if (fs.existsSync(dir) === false) {
 
         mkdirSync(dir, 'recursive');
 
@@ -34,7 +34,7 @@ export function mkdirIfNotExists(dir) {
 
 export function createFileIfNotExists(filename, content) {
 
-    if(fs.existsSync(filename) === false) {
+    if (fs.existsSync(filename) === false) {
 
         fs.writeFileSync(filename, content);
 
@@ -54,7 +54,7 @@ export function lockFile(filename, secret) {
         f.openSourceFile();
         f.encrypt(secret);
         encryptPath = f.encryptFilePath;
-    } catch(err) {
+    } catch (err) {
         throw err;
     }
 
@@ -66,12 +66,12 @@ export function lockFile(filename, secret) {
 
 export function unlockFile(filename, secret) {
 
-    try{
+    try {
         let f = new FileEncrypt(filename);
         f.openSourceFile();
         return f.decrypt(secret);
 
-    } catch(err) {
+    } catch (err) {
         throw err;
     }
 

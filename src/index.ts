@@ -24,70 +24,69 @@ import readline from 'readline';
 import {createWalletAddress, getPublicKeyFromAddress, validateWalletAddress} from './network/addresses';
 import {series, waterfall} from 'async';
 import {lockFile} from "./common/fs";
+
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 const env_variables = config();
 
-if(env_variables.error) {
+if (env_variables.error) {
     throw Error('cannot find environment variables files');
 }
 
-let _MODE="";
+let _MODE = "";
 
-if(process.env.DEV_VERSION === 'true') {
-    _MODE="DEV";
-} else if(process.env.LIVE_VERSION === 'true') {
-    _MODE="LIVE";
-} else if(process.env.TEST_VERSION === 'true') {
-    _MODE="TEST"
+if (process.env.DEV_VERSION === 'true') {
+    _MODE = "DEV";
+} else if (process.env.LIVE_VERSION === 'true') {
+    _MODE = "LIVE";
+} else if (process.env.TEST_VERSION === 'true') {
+    _MODE = "TEST"
 }
 
 //display mode
 let PrivKey = '';
 
-let walletAlias="";
+let walletAlias = "";
 
 
 waterfall([
-     function(callback) {
-         console.info("The Swaggit Blockchain will start in %s Mode, press CTRL-C or CTRL-Z to abort.", _MODE);
-         callback(null, true);
-     },
-     function(arg1, callback) {
-         fs.readFile(process.env.NETWORK_PRIV_KEY, function(err, file) {
+    function (callback) {
+        console.info("The Swaggit Blockchain will start in %s Mode, press CTRL-C or CTRL-Z to abort.", _MODE);
+        callback(null, true);
+    },
+    function (arg1, callback) {
+        fs.readFile(process.env.NETWORK_PRIV_KEY, function (err, file) {
 
-             if(err) callback(Error('there is no readable PEM file for network private key. Have you initialized a new keypair?'), null);
+            if (err) callback(Error('there is no readable PEM file for network private key. Have you initialized a new keypair?'), null);
 
-             PrivKey = file.toString();
-
-
+            PrivKey = file.toString();
 
 
-         });
+        });
 
-         let PubKey = '';
+        let PubKey = '';
 
-         fs.readFile(process.env.NETWORK_PRIV_KEY, function(err, file) {
+        fs.readFile(process.env.NETWORK_PRIV_KEY, function (err, file) {
 
-             if(err) callback(Error('there is no readable PEM file for network public key. Have you initialized a new keypair?'), null);
+            if (err) callback(Error('there is no readable PEM file for network public key. Have you initialized a new keypair?'), null);
 
-             PubKey = file.toString();
+            PubKey = file.toString();
 
 
-             // all ok keys are loaded
-             //console.info('network keys are loaded...');
-         });
+            // all ok keys are loaded
+            //console.info('network keys are loaded...');
+        });
 
-         callback(null, {pub:PubKey, priv:PrivKey});
-     },
-    function(arg1, callback) {
+        callback(null, {pub: PubKey, priv: PrivKey});
+    },
+    function (arg1, callback) {
 
-        rl.question("\n\nWe couldn't find any wallet files, do you wish to generate a new wallet? (Y/N)", function(answer) {
+        rl.question("\n\nWe couldn't find any wallet files, do you wish to generate a new wallet? (Y/N)", function (answer) {
 
-            if(answer === "Y" || answer === "N") {
-                switch(answer) {
+            if (answer === "Y" || answer === "N") {
+                switch (answer) {
                     case "Y": {
                         const userWalletAddress = createWalletAddress();
                         console.info('\n\nHere are the info about your new Swaggit wallet! Make sure to write it down some place safe!');
@@ -96,19 +95,19 @@ waterfall([
 
                         console.info("Your secret key (DO NOT SHARE IT IN ANY CASE!): %s ", userWalletAddress.privKey);
 
-                        fs.writeFileSync(process.env.WALLET_PATH+"swagg_wallet.dat", JSON.stringify(userWalletAddress), "binary");
-                        lockFile(process.env.WALLET_PATH+"swagg_wallet.dat", PrivKey);
+                        fs.writeFileSync(process.env.WALLET_PATH + "swagg_wallet.dat", JSON.stringify(userWalletAddress), "binary");
+                        lockFile(process.env.WALLET_PATH + "swagg_wallet.dat", PrivKey);
 
                         console.info("-----------------------------------------------------------");
 
 
-                        if(userWalletAddress) {
+                        if (userWalletAddress) {
 
                             rl.question("\n\nPick a friendly name for your address alias. \nThat is the name you will give people you want to receive SWAGGS from: ", function (answer) {
 
                                 console.info('-----------------------------------------------------------');
                                 console.info('Congratulation you can now receive SWAGGS ! Welcome aboard %s !', answer);
-                                walletAlias=answer;
+                                walletAlias = answer;
                             });
 
                         }
@@ -127,9 +126,9 @@ waterfall([
         });
         return callback(null, 'done');
     }
-], function(err, result) {
+], function (err, result) {
 
-    if(err) throw err;
+    if (err) throw err;
 
     console.log(result);
 

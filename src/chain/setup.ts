@@ -24,16 +24,16 @@ import {sendWork} from "../zmq/pushServer";
 
 class Setup {
 
-    private p2pListener:Networking;
+    private p2pListener: Networking;
     private p2pClient;
     private zmqWorker;
     private dbConn;
-    private fileSystemState:boolean = false;
-    private zmqState:boolean = false;
-    private p2pState:boolean = false;
-    private dbState:boolean = false;
+    private fileSystemState: boolean = false;
+    private zmqState: boolean = false;
+    private p2pState: boolean = false;
+    private dbState: boolean = false;
     private localWallet;
-    private walletState:'locked'|'unlocked' = 'locked';
+    private walletState: 'locked' | 'unlocked' = 'locked';
 
     constructor(opts = {}) {
 
@@ -58,7 +58,7 @@ class Setup {
             this.p2pListener = new Networking();
             this.p2pClient = Networking.createNewClient();
 
-        } catch(err) {
+        } catch (err) {
             throw err;
         }
 
@@ -72,7 +72,7 @@ class Setup {
         try {
             this.zmqWorker = sock;
             sendWork('connect', 0);
-        } catch(err) {
+        } catch (err) {
             throw err;
         }
 
@@ -80,7 +80,7 @@ class Setup {
 
     };
 
-    setupDatabaseConnection = (dbType:'redis'|'mongodb'|'filesystem') => {
+    setupDatabaseConnection = (dbType: 'redis' | 'mongodb' | 'filesystem') => {
 
 
         this.dbState = true;
@@ -90,8 +90,6 @@ class Setup {
     loadLocalWallet = () => {
 
     };
-
-
 
 
 }

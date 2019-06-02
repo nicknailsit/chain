@@ -28,25 +28,25 @@ import fs from 'fs';
 
 interface coinbase {
 
-    chainID:string;
-    address:string;
-    licenseID:string; //acts like a bank license for the chain
-    coins:Array<Coin>;
-    completed_transactions:Array<Transaction>;
-    pending_transactions:Array<Transaction>;
-    rejected_transactions:Array<Transaction>;
-    suspected_transactions:Array<Transaction>;
-    coins_spent:number;
-    coins_transfered:number;
-    coins_minted:number;
-    last_issuance_date:string;
-    last_coin_hash:string;
-    last_coin_serial:string;
-    total_transactions_in:number;
-    total_transactions_out:number;
-    last_validators:Array<string>; // validators will be selected based on the trust level of the node.
-    last_elected_comitee:Array<string>; //comitee will be 'elected' in a raft style based on age of account, proof of stake and other criterias.
-    readonly keys:object;
+    chainID: string;
+    address: string;
+    licenseID: string; //acts like a bank license for the chain
+    coins: Array<Coin>;
+    completed_transactions: Array<Transaction>;
+    pending_transactions: Array<Transaction>;
+    rejected_transactions: Array<Transaction>;
+    suspected_transactions: Array<Transaction>;
+    coins_spent: number;
+    coins_transfered: number;
+    coins_minted: number;
+    last_issuance_date: string;
+    last_coin_hash: string;
+    last_coin_serial: string;
+    total_transactions_in: number;
+    total_transactions_out: number;
+    last_validators: Array<string>; // validators will be selected based on the trust level of the node.
+    last_elected_comitee: Array<string>; //comitee will be 'elected' in a raft style based on age of account, proof of stake and other criterias.
+    readonly keys: object;
     coin_merkle: any;
 
 
@@ -54,27 +54,27 @@ interface coinbase {
 
 class Coinbase implements coinbase {
 
-    chainID:string;
-    address:string;
-    licenseID:string; //acts like a bank license for the chain
+    chainID: string;
+    address: string;
+    licenseID: string; //acts like a bank license for the chain
     signature: string;
-    coins:Array<Coin>;
-    completed_transactions:Array<Transaction>;
-    pending_transactions:Array<Transaction>;
-    rejected_transactions:Array<Transaction>;
-    suspected_transactions:Array<Transaction>;
-    coins_spent:number;
-    coins_transfered:number;
-    coins_minted:number;
-    last_issuance_date:string;
-    last_coin_hash:string;
-    last_coin_serial:string;
-    total_transactions_in:number;
-    total_transactions_out:number;
-    last_validators:Array<string>;
-    last_elected_comitee:Array<string>;
-    readonly keys:object;
-    coin_merkle:any;
+    coins: Array<Coin>;
+    completed_transactions: Array<Transaction>;
+    pending_transactions: Array<Transaction>;
+    rejected_transactions: Array<Transaction>;
+    suspected_transactions: Array<Transaction>;
+    coins_spent: number;
+    coins_transfered: number;
+    coins_minted: number;
+    last_issuance_date: string;
+    last_coin_hash: string;
+    last_coin_serial: string;
+    total_transactions_in: number;
+    total_transactions_out: number;
+    last_validators: Array<string>;
+    last_elected_comitee: Array<string>;
+    readonly keys: object;
+    coin_merkle: any;
     protected keyPair;
 
     constructor(chainID, passPhrase) {
@@ -101,28 +101,6 @@ class Coinbase implements coinbase {
 
     }
 
-    createLicenseID = () => {
-
-        const created_on = Buffer.from(Date.now().toString(16));
-        const uniqueID = Buffer.from(uuid());
-        const originMachineID = Buffer.from(machineIdSync());
-
-        const buf = Buffer.alloc(created_on.length+uniqueID.length+originMachineID.length);
-
-        created_on.copy(buf, 0, 0);
-        uniqueID.copy(buf, created_on.length, 0);
-        originMachineID.copy(buf, created_on.length+uniqueID.length, 0);
-
-
-
-        const license = new Hashing('sha3-256', buf.toString('hex'), true);
-        this.signature = this.signCoinbase(license);
-
-        this.licenseID = license.toString();
-
-
-    };
-
     static validateLicenseID(passPhrase, licenseID) {
 
         const signature = fs.readFileSync('./.keychain/coinbase.signature').toString('hex');
@@ -132,6 +110,27 @@ class Coinbase implements coinbase {
         return verify.verify(pubKey, signature);
 
     }
+
+    createLicenseID = () => {
+
+        const created_on = Buffer.from(Date.now().toString(16));
+        const uniqueID = Buffer.from(uuid());
+        const originMachineID = Buffer.from(machineIdSync());
+
+        const buf = Buffer.alloc(created_on.length + uniqueID.length + originMachineID.length);
+
+        created_on.copy(buf, 0, 0);
+        uniqueID.copy(buf, created_on.length, 0);
+        originMachineID.copy(buf, created_on.length + uniqueID.length, 0);
+
+
+        const license = new Hashing('sha3-256', buf.toString('hex'), true);
+        this.signature = this.signCoinbase(license);
+
+        this.licenseID = license.toString();
+
+
+    };
 
     signCoinbase = (data) => {
 
