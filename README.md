@@ -72,4 +72,6 @@ The anti-forgery features will also help prevent spam, abuses and fake news with
 
 ### Validators & Comittee selection algorithm (raft based)
 
+### Open source initiative and the GPL3.0 License
+
 ## Future developments
