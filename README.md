@@ -18,6 +18,7 @@ own blockchain, security algorithm, consensus and coinbase.
   * POW: SHA3-512
   * Rewards: level1 - 1,000,000SWG, level2 - 100,000SWG, level 3 - 10,000SWG
   * Validates: Coin issuance, Hashing, Transactions, Blocks, Content value
+  * Maturity: Block 100,000
   
 * Max Available: 47,000,000 SWG
 * Min. transaction amount: 0.000000001
