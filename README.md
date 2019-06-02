@@ -56,10 +56,16 @@ The anti-forgery features will also help prevent spam, abuses and fake news with
 
 ### Transactions
 
-### Algorithms
+### Algorithms (Encryption, Encoding and Bufferization)
+
+### Address types & Algorithm
 
 ### Communication Protocol
 
 ### Anonymity
+
+### Proof of work
+
+### Validators & Comittee selection algorithm (raft based)
 
 ### Future developments
