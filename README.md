@@ -33,7 +33,7 @@ own blockchain, security algorithm, consensus and coinbase.
   
 ... more to come
 
-## UTILITY BASED DEVELOPMENT
+## Utility first based development
 
 I decided to build this project with a specific use-case in mind. However I decided along the way to make it adaptable to more
 decentralized and privacy-centric ones as well.
@@ -43,3 +43,5 @@ and rewards as well as insure privacy and anonimity for the users. The wallet wi
 carry the user encrypted data before it is shared publicly on the network (like facebook, the security settings will be customizable).
 
 The anti-forgery features will also help prevent spam, abuses and fake news without even knowing its content.
+
+## Robust peer-to-peer communications and data transmission
