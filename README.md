@@ -68,4 +68,4 @@ The anti-forgery features will also help prevent spam, abuses and fake news with
 
 ### Validators & Comittee selection algorithm (raft based)
 
-### Future developments
+## Future developments
