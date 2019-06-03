@@ -25,15 +25,15 @@ import {createWalletAddress, getPublicKeyFromAddress, validateWalletAddress} fro
 import {series, waterfall} from 'async';
 import {lockFile} from "./common/fs";
 import Chain from "./chain/chain";
+const env_variables = config();
 
-new Chain();
 
 
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
-const env_variables = config();
+
 
 if (env_variables.error) {
     throw Error('cannot find environment variables files');
@@ -54,6 +54,7 @@ let PrivKey = '';
 
 let walletAlias = "";
 
+new Chain();
 
 waterfall([
     function (callback) {
