@@ -20,6 +20,7 @@
 
 import crypto from 'crypto';
 import bs58 from 'bs58';
+const forge = require('node-forge');
 
 class Hashing {
 
@@ -34,7 +35,8 @@ class Hashing {
         if (hashData) {
 
             this.dataToHash = hashData;
-            this.hash = crypto.createHash(hashType).update(this.dataToHash).digest();
+          this.hash = crypto.createHash(hashType).update(this.dataToHash).digest();
+
 
             if (toString === true) {
                 this._toString();
@@ -50,6 +52,27 @@ class Hashing {
 
 
     }
+
+
+    SHA256 = (hex:string) => {
+
+        let md = forge.md.sha256.create();
+        md.update(hex);
+        return md.digest().toHex();
+
+    };
+
+    SHA512 = (str:string) => {
+        let md = forge.md.sha512.create();
+        md.update(str);
+        return md.digest().toHex();
+    };
+
+    SHA512256 = (str:string) => {
+        let md = forge.md.sha512.sha256.create();
+        md.update(str);
+        return md.digest().toHex();
+    };
 
     _toString = () => {
 
