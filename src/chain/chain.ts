@@ -31,14 +31,13 @@ const treeOptions = {
 };
 
 
-
 class Chain {
 
     private readonly chainID;
     private blocks = [];
     private readonly keys;
     private readonly genesisData;
-    private  chainLength;
+    private chainLength;
     private remoteChain;
     private p2pListener;
     private p2pClient;
@@ -46,16 +45,15 @@ class Chain {
     private merkleTree;
     private merkleRoot;
 
-    constructor(keys=[], opts={}, Blocks = [], devMode=true) {
+    constructor(keys = [], opts = {}, Blocks = [], devMode = true) {
 
 
-        if(devMode === true) {
+        if (devMode === true) {
             this.chainID = process.env.DEV_CHAIN_ID;
         }
 
 
-
-        if(Blocks.length <= 0) {
+        if (Blocks.length <= 0) {
 
             this.merkleTree = new merkle(treeOptions);
 
@@ -77,10 +75,17 @@ class Chain {
 
     }
 
+    get numBlocks() {
+        return this.chainLength;
+    }
+
+    set numBlocks(length) {
+        this.chainLength = length;
+    }
 
     createGenesisBlock = () => {
 
-        const block =  new Block(this.genesisData.chainID, this.genesisData.index, this.genesisData.difficulty, this.genesisData.reward, this.genesisData.hash, this.genesisData.payload);
+        const block = new Block(this.genesisData.chainID, this.genesisData.index, this.genesisData.difficulty, this.genesisData.reward, this.genesisData.hash, this.genesisData.payload);
 
 
         const firstHash = block.payload["blockhash"];
@@ -101,24 +106,13 @@ class Chain {
 
     };
 
-
-
     getBlocks = () => {
 
 
         //request new blockchain from peers
 
 
-
     };
-
-    set numBlocks(length) {
-        this.chainLength = length;
-    }
-
-    get numBlocks() {
-        return this.chainLength;
-    }
 
 
 }
