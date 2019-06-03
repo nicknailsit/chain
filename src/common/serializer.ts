@@ -18,7 +18,7 @@
 
 'use strict';
 
-export const { Deserialize, Serialize } = require('beson');
+export const {Deserialize, Serialize} = require('beson');
 
 const forge = require('node-forge');
 

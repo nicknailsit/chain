@@ -28,11 +28,11 @@ const forge = require('node-forge');
 
 export const {Int128, UInt128, Int32, Uint32, Int64, Uint64} = require('beson');
 
-export const AddU256 = (...args:[UInt256]) => {
+export const AddU256 = (...args: [UInt256]) => {
 
     let x = args[0];
 
-    for(let i = 1;i < args.length;i++) {
+    for (let i = 1; i < args.length; i++) {
 
         x.add(args[i]);
 
@@ -42,11 +42,11 @@ export const AddU256 = (...args:[UInt256]) => {
 
 };
 
-export const SubU256 = (...args:[UInt256]) => {
+export const SubU256 = (...args: [UInt256]) => {
 
     let x = args[0];
 
-    for(let i = 1;i < args.length;i++) {
+    for (let i = 1; i < args.length; i++) {
 
         x.sub(args[i]);
 
@@ -56,11 +56,11 @@ export const SubU256 = (...args:[UInt256]) => {
 
 };
 
-export const MulU256 = (...args:[UInt256]) => {
+export const MulU256 = (...args: [UInt256]) => {
 
     let x = args[0];
 
-    for(let i = 1;i < args.length;i++) {
+    for (let i = 1; i < args.length; i++) {
 
         x.mul(args[i]);
 
@@ -70,11 +70,11 @@ export const MulU256 = (...args:[UInt256]) => {
 
 };
 
-export const DivU256 = (...args:[UInt256]) => {
+export const DivU256 = (...args: [UInt256]) => {
 
     let x = args[0];
 
-    for(let i = 1;i < args.length;i++) {
+    for (let i = 1; i < args.length; i++) {
 
         x.div(args[i]);
 
@@ -84,7 +84,7 @@ export const DivU256 = (...args:[UInt256]) => {
 
 };
 
-export const fAdd = (...args:[BigFloat32]) => {
+export const fAdd = (...args: [BigFloat32]) => {
 
 
     let bigfloat = new BigFloat32();
@@ -92,7 +92,7 @@ export const fAdd = (...args:[BigFloat32]) => {
 
     let x = args[0];
 
-    for (let i=1;i<args.length;i++) {
+    for (let i = 1; i < args.length; i++) {
 
         x.add(args[i]);
         i++;
@@ -103,14 +103,14 @@ export const fAdd = (...args:[BigFloat32]) => {
 
 };
 
-export const fSub = (...args:[BigFloat32]) => {
+export const fSub = (...args: [BigFloat32]) => {
 
     let bigfloat = new BigFloat32();
     bigfloat.setZero();
 
     let x = args[0];
 
-    for (let i=1;i<args.length;i++) {
+    for (let i = 1; i < args.length; i++) {
 
         x.sub(args[i]);
         i++;
@@ -122,7 +122,7 @@ export const fSub = (...args:[BigFloat32]) => {
 
 };
 
-export const fMul = (...args:[BigFloat32]) => {
+export const fMul = (...args: [BigFloat32]) => {
 
     let bigfloat = new BigFloat32();
     bigfloat.setZero();
@@ -130,7 +130,7 @@ export const fMul = (...args:[BigFloat32]) => {
     let x = args[0];
 
 
-    for (let i=1;i<args.length;i++) {
+    for (let i = 1; i < args.length; i++) {
 
         x.mul(args[i]);
         i++;
@@ -140,19 +140,19 @@ export const fMul = (...args:[BigFloat32]) => {
     return bigfloat.setValue(x).toString();
 };
 
-export const generateRandomPrime = async (bits:number) => {
+export const generateRandomPrime = async (bits: number) => {
 
-        return await forge.prime.generateProbablePrime(bits, function(err, num){
-            return num.toString();
-        });
+    return await forge.prime.generateProbablePrime(bits, function (err, num) {
+        return num.toString();
+    });
 
 };
 
-export const  generateSecureRandomBytes = (bytes:number, toHex=false) => {
+export const generateSecureRandomBytes = (bytes: number, toHex = false) => {
     let B = forge.random.getBytesSync(bytes);
-    if(toHex === true) {
+    if (toHex === true) {
         return forge.util.bytesToHex(B);
-    } else if(toHex === false) {
+    } else if (toHex === false) {
         return B;
     }
 
