@@ -24,6 +24,10 @@ import readline from 'readline';
 import {createWalletAddress, getPublicKeyFromAddress, validateWalletAddress} from './network/addresses';
 import {series, waterfall} from 'async';
 import {lockFile} from "./common/fs";
+import Chain from "./chain/chain";
+
+new Chain();
+
 
 const rl = readline.createInterface({
     input: process.stdin,

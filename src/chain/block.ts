@@ -22,6 +22,7 @@ import Transaction from './transactions';
 import {List, Map} from 'immutable';
 import {ADDRESS_TYPE_BLOCK, DEV_NETWORK, DEV_VERSION} from "../network/addresses";
 import Hashing from '../common/hashing';
+import crypto from 'crypto';
 
 
 interface BlockInterface {
@@ -84,11 +85,19 @@ class Block implements BlockInterface {
 
         }
 
+        console.log(content);
+
         this.blockHeader = this.writeBlockHeader();
-        this.payload = this.writeBlockPayload(this.blockHeader, prevHash, Buffer.from(content));
+
+        this.payload = this.writeBlockPayload(this.blockHeader, Buffer.from(prevHash), Buffer.from(content));
+
+        this.getRawBlock();
 
 
     };
+
+
+
 
     static parseBlock(block) {
 
@@ -101,10 +110,10 @@ class Block implements BlockInterface {
 
     }
 
-    static writeBytes(buf, buffer, i) {
+    static writeBytes(buf, buffered, i) {
 
 
-        for (const values of buffer.values()) {
+        for (const values of buffered.values()) {
             buf.writeInt16LE(values, i);
             i++;
         }
@@ -124,26 +133,23 @@ class Block implements BlockInterface {
 
     writeBlockPayload = (header: Buffer, prevHash: Buffer, content: Buffer) => {
 
-        const hash = new Hashing("sha3-512", header); //hash buffer
+        const hash = crypto.createHash('sha3-512').update(header.toString()).digest('hex');
 
         const buf = Buffer.alloc(header.length + prevHash.length + content.length, 0);
 
-        const rehashString = hash.toString() + prevHash.toString();
-        const rehash = new Hashing("sha3-512", rehashString);
 
-        let offset;
+
+        let offset = 0;
         let buffer;
 
-        [offset, buffer] = Block.writeBytes(buf, header, 0);
-        console.log('hash offset: %s', offset);
-        [offset, buffer] = Block.writeBytes(buffer, hash, offset);
-        console.log('content offset: %s', offset);
-        [offset, buffer] = Block.writeBytes(buffer, content, offset);
+        header.copy(buf, 0, 0);
+        prevHash.copy(buf, header.length+1, 0);
+        content.copy(buf, header.length+prevHash.length+1, 0);
 
         return {
-            blockBuffer: buffer,
-            blockSize: offset,
-            blockhash: rehash,
+            blockBuffer: buf,
+            blockSize: buf.length,
+            blockhash: hash.toString(),
             blockalg: "sha3-512"
         }
 
@@ -170,7 +176,7 @@ class Block implements BlockInterface {
 
         console.log('end index for time: %s', i);
 
-        buf.writeInt8(0xff, i);
+        buf.writeInt16BE(0xff, i);
         i++;
         //block index
         const indexBuf = Buffer.from(`i+${this.index}`);
@@ -182,7 +188,8 @@ class Block implements BlockInterface {
         console.log('end index for blockIndex: %s', i);
 
         if (this.previousHash !== null) {
-            for (const values of this.previousHash.values()) {
+            const preHash = Buffer.from(this.previousHash);
+            for (const values of preHash.values()) {
 
                 buf.writeInt16LE(values, i);
                 i++;
@@ -192,7 +199,7 @@ class Block implements BlockInterface {
 
         console.log('end index for prevHash: %s', i);
 
-        buf.writeInt8(0xff, i);
+        buf.writeInt16BE(0xff, i);
 
 
         return buf;

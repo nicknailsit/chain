@@ -30,7 +30,7 @@ class Hashing {
     private hashString: string;
     private hashEncoded: string;
 
-    constructor(hashType: string = "sha3-512", hashData: string | Buffer, toString: boolean = false, bs58encoded: boolean = false, doubleHash: boolean = false) {
+    constructor(hashType: string = "sha3-512", hashData: string | Buffer, toString: boolean = true, bs58encoded: boolean = false, doubleHash: boolean = false) {
 
 
         if (hashData) {
@@ -55,7 +55,7 @@ class Hashing {
     }
 
 
-    SHA256 = (hex: string) => {
+    _SHA256 = (hex: string) => {
 
         let md = forge.md.sha256.create();
         md.update(hex);
@@ -63,13 +63,13 @@ class Hashing {
 
     };
 
-    SHA512 = (str: string) => {
+    _SHA512 = (str: string) => {
         let md = forge.md.sha512.create();
         md.update(str);
         return md.digest().toHex();
     };
 
-    SHA512256 = (str: string) => {
+    _SHA512256 = (str: string) => {
         let md = forge.md.sha512.sha256.create();
         md.update(str);
         return md.digest().toHex();
@@ -88,11 +88,7 @@ class Hashing {
     };
 
     returnHash = () => {
-        return {
-            origHash: this.hash,
-            stringified: this.hashString || null,
-            encoded: this.hashEncoded || null
-        };
+      return this.hashString;
     }
 
 

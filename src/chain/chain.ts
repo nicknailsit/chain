@@ -23,12 +23,19 @@ import Networking from '../network/node';
 import fs from 'fs';
 import sock from '../zmq/pullWorker';
 import {sendWork} from '../zmq/pushServer';
+import {Serialize} from '../common/serializer';
+
+const merkle = require('merklie');
+const treeOptions = {
+    hashType: 'sha3-512'
+};
+
 
 
 class Chain {
 
     private readonly chainID;
-    private blocks;
+    private blocks = [];
     private readonly keys;
     private readonly genesisData;
     private  chainLength;
@@ -36,26 +43,30 @@ class Chain {
     private p2pListener;
     private p2pClient;
     private zmqWorker;
+    private merkleTree;
+    private merkleRoot;
 
-    constructor(keys, opts={}, Blocks = [], devMode=true) {
+    constructor(keys=[], opts={}, Blocks = [], devMode=true) {
 
 
         if(devMode === true) {
             this.chainID = process.env.DEV_CHAIN_ID;
         }
 
+
+
         if(Blocks.length <= 0) {
-            const gFile = process.env.CHAIN_BLOCK_GENESIS_JSON;
-            let genesisData = this.genesisData;
-            fs.readFile('./src' + gFile, function (err, file) {
 
-                if (err) throw err;
-                genesisData = file;
+            this.merkleTree = new merkle(treeOptions);
 
-            });
-            this.genesisData = genesisData;
+            const gFile = 'genesis.json';
+            const genesisData = fs.readFileSync('./' + gFile).toString();
+            this.genesisData = JSON.parse(genesisData);
 
-            this.blocks = this.getBlocks()
+
+            this.createGenesisBlock();
+
+
         } else {
 
             this.blocks = Blocks;
@@ -67,7 +78,28 @@ class Chain {
     }
 
 
+    createGenesisBlock = () => {
 
+        const block =  new Block(this.genesisData.chainID, this.genesisData.index, this.genesisData.difficulty, this.genesisData.reward, this.genesisData.hash, this.genesisData.payload);
+
+
+        const firstHash = block.payload["blockhash"];
+
+        this.merkleTree.addLeaf(this.genesisData.hash);
+        this.merkleTree.addLeaf(firstHash);
+
+        this.merkleTree.makeTree();
+
+        this.merkleRoot = this.merkleTree.getMerkleRoot();
+
+        block.merkleRoot = this.merkleRoot;
+
+        this.blocks.push(block);
+
+        console.log('created genesis block');
+
+
+    };
 
 
 

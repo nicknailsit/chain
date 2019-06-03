@@ -32,6 +32,7 @@
     "fastify-jwt": "^0.10.0",
     "fastify-swagger": "^2.4.0",
     "immutable": "^4.0.0-rc.12",
+    "merklie": "^2.0.0",
     "msgpack": "^1.0.2",
     "node-file-encrypt": "0.0.5",
     "node-forge": "^0.8.4",
