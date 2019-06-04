@@ -64,7 +64,7 @@ export let Anonymize = false; // will be implemented soon
 
 
 
-// Chain and walexport let configuration
+// Chain and wallet let configuration
 
 export const ChainMode = "dev"; // available options are: dev, test, local, live
 
@@ -72,11 +72,11 @@ export const ChainKeysDir = "./keychain/"; //change this if you want the chain t
 
 export const ChainStorageDirectory = "./data/"+ChainMode+"/"; // you can also change this if you want to store chain data on an external drive per example (needs to be relative to the root of the drive)
 
-export const enableLiteChain = false; // if enabled, advanced features won't work. However you will still be able to use your walexport let to send and receive Swaggs (SWG)
+export const enableLiteChain = false; // if enabled, advanced features won't work. However you will still be able to use your wallet let to send and receive Swaggs (SWG)
 
 export const myMachineKeysDirectory = ""; // : !!!advanced users only!!!!
 
-export const useExistingWallet = false; //if set to true it will look for a json file with your walexport let info in this directory (usually named walexport let.json) use this option to restore your existing walexport let
+export const useExistingWallet = false; //if set to true it will look for a json file with your wallet let info in this directory (usually named wallet let.json) use this option to restore your existing wallet let
 
 export const saveToAnExternalDevice = false; // : !!!advanced users only!!!! external devices or cold storage
 
