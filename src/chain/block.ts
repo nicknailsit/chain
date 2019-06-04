@@ -23,6 +23,9 @@ import {List, Map} from 'immutable';
 import {ADDRESS_TYPE_BLOCK, DEV_NETWORK, DEV_VERSION} from "../network/addresses";
 import Hashing from '../common/hashing';
 import crypto from 'crypto';
+import MemoryDB from '../database/memory/adapter';
+
+const DB = new MemoryDB();
 
 
 interface BlockInterface {
@@ -60,6 +63,7 @@ class Block implements BlockInterface {
     private readonly bVersion: any;
     private readonly bNet: any;
     private readonly blockHeader;
+    private blockqueuedb;
 
 
     constructor(chainID, blockIndex, difficulty, reward, prevHash = null, content, _MODE = "DEV") {
@@ -76,6 +80,9 @@ class Block implements BlockInterface {
         this.merkleRoot = null;
         this.transactions = [];
 
+        this.blockqueuedb = DB.getCollection('block_queue');
+
+
         this.bType = ADDRESS_TYPE_BLOCK;
 
         if (_MODE === "DEV") {
@@ -85,13 +92,36 @@ class Block implements BlockInterface {
 
         }
 
-        console.log(content);
 
         this.blockHeader = this.writeBlockHeader();
 
         this.payload = this.writeBlockPayload(this.blockHeader, Buffer.from(prevHash), Buffer.from(content));
 
         this.getRawBlock();
+        //insert the payload in the queue
+        const data = {
+            'payload':JSON.stringify(this.payload),
+            'reward': this.reward,
+            'isGenesis': ''
+        };
+
+
+        if(blockIndex === 0) {
+            this.blockqueuedb.remove({}, {multi:true}, function(err, num){
+
+                if(err) throw err;
+                console.log('%s pending block(s) removed from mining queue, will add genesis block', num);
+
+            });
+            data.isGenesis = 'true';
+            DB.insertData(this.blockqueuedb, {item:data}, function(err, res) {
+                if(err) throw err;
+                console.log('block: genesis block created in queue, awaiting to be discovered! reward: %s SWG!!! ', res.item.reward);
+            });
+        }
+
+
+
 
 
     };
@@ -127,7 +157,8 @@ class Block implements BlockInterface {
 
     getRawBlock = () => {
 
-        return this.payload;
+         return this.payload;
+
 
     };
 
@@ -147,10 +178,10 @@ class Block implements BlockInterface {
         content.copy(buf, header.length+prevHash.length+1, 0);
 
         return {
-            blockBuffer: buf,
+            blockBuffer: buf.toString('hex'),
             blockSize: buf.length,
             blockhash: hash.toString(),
-            blockalg: "sha3-512"
+            blocknonce: hash.slice(0,5),
         }
 
 

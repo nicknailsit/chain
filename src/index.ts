@@ -55,6 +55,7 @@ let walletAlias = "";
 
 new Chain();
 
+/*
 waterfall([
     function (callback) {
         console.info("The Swaggit Blockchain will start in %s Mode, press CTRL-C or CTRL-Z to abort.", _MODE);
@@ -136,4 +137,4 @@ waterfall([
 
     console.log(result);
 
-});
+});*/

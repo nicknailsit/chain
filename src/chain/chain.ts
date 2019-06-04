@@ -31,6 +31,8 @@ const treeOptions = {
 };
 
 
+
+
 class Chain {
 
     private readonly chainID;
@@ -44,8 +46,11 @@ class Chain {
     private zmqWorker;
     private merkleTree;
     private merkleRoot;
+    private blockQueueDb;
 
     constructor(keys = [], opts = {}, Blocks = [], devMode = true) {
+
+
 
 
         if (devMode === true) {
@@ -85,7 +90,7 @@ class Chain {
 
     createGenesisBlock = () => {
 
-        const block = new Block(this.genesisData.chainID, this.genesisData.index, this.genesisData.difficulty, this.genesisData.reward, this.genesisData.hash, this.genesisData.payload);
+        const block = new Block(this.genesisData.chainID, this.genesisData.index, this.genesisData.difficulty, 1000000, this.genesisData.hash, this.genesisData.payload);
 
 
         const firstHash = block.payload["blockhash"];
@@ -99,7 +104,7 @@ class Chain {
 
         block.merkleRoot = this.merkleRoot;
 
-        this.blocks.push(block);
+
 
         console.log('created genesis block');
 

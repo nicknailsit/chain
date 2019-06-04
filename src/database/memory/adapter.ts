@@ -56,20 +56,37 @@ class MemoryAdapter {
             datadir = process.env.DATA_LIVE_CHAIN_PATH;
         } else if (_MODE === "test") {
             datadir = process.env.DATA_TEST_CHAIN_PATH;
+
         } else if (_MODE === "local") {
             datadir = process.env.DATA_LOCAL_CHAIN_PATH;
         }
-        this.dbFile = path.resolve(__dirname, `../../${datadir}`, `chain.db`);
+        this.dbFile = path.resolve(__dirname, `../../data/dev/`, `chain.db`);
 
-        this.db = new Datastore({filename: this.dbFile, autoload: true});
+        this.db = {
+            'chain': new Datastore({filename: this.dbFile, autoload: true}),
+            'blocks': new Datastore({filename:  path.resolve(__dirname, `../../data/dev/`, `blocks.db`), autoload: true}),
+            'headers': new Datastore({filename:  path.resolve(__dirname, `../../data/dev/`, `headers.db`), autoload: true}),
+            'receipts': new Datastore({filename:  path.resolve(__dirname, `../../data/dev/`, `receipts.db`), autoload: true}),
+            'contracts': new Datastore({filename:  path.resolve(__dirname, `../../data/dev/`, `contracts.db`), autoload: true}),
+            'block_queue': new Datastore({filename:  path.resolve(__dirname, `../../data/dev/`, `block_queue.db`), autoload: true}),
+            'tx_queue': new Datastore({filename:  path.resolve(__dirname, `../../data/dev/`, `tx_queue.db`), autoload: true}),
+            'snapshots': new Datastore({filename:  path.resolve(__dirname, `../../data/dev/`, `snapshots.db`), autoload: true})
+        };
 
 
     }
 
 
-    public insertData(collection, data, cb) {
+    public getCollection(collection) {
 
-        this.db.insert(data, cb);
+        return this.db[collection];
+
+    }
+
+
+    public insertData(coll, data, cb) {
+
+        coll.insert(data, cb);
     };
 
     static getData(self: MemoryAdapter, collection, criterias) {
