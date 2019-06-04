@@ -64,7 +64,7 @@ export let Anonymize = false; // will be implemented soon
 
 
 
-// Chain and wallet let configuration
+// Chain and wallet configuration
 
 export const ChainMode = "dev"; // available options are: dev, test, local, live
 
