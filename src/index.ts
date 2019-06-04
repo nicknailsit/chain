@@ -28,7 +28,6 @@ import Chain from "./chain/chain";
 const env_variables = config();
 
 
-
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
