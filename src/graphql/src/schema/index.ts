@@ -29,6 +29,7 @@ const typeDefs = gql`
         transaction(address: String!, key:String!): Transaction!
         balance(address:String!, key:String!): String
         txStatus(txID:ID!): TransactionResponse!
+        coinStats:[String]
         
     }
     
