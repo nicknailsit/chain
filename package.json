@@ -37,7 +37,7 @@
     "msgpack": "^1.0.2",
     "nedb": "^1.8.0",
     "node-file-encrypt": "0.0.5",
-    "node-forge": "^0.8.4",
+    "node-forge": "^0.10.0",
     "node-machine-id": "^1.1.12",
     "packet": "0.0.7",
     "uint256": "^1.0.8",
